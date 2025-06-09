@@ -1,12 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>helo </h1>
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Est, sed. hello</p>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bitchat</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="chat-container">
+      <header class="chat-header">
+        <h1>💬 bitchat</h1>
+      </header>
+      <main class="chat-main">
+        <div class="chat-messages" id="chat-messages">
+          <!-- Messages will be appended here -->
+        </div>
+      </main>
+      <form class="chat-form" id="chat-form">
+        <input
+          type="text"
+          id="msg"
+          placeholder="Type a message..."
+          required
+          autocomplete="off"
+        />
+        <button id="btn">Send</button>
+      </form>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+      const textfield = document.getElementById("msg");
+
+      const socket = io();
+      // prints in website console (kyuki server ne bheja hai )
+      socket.on("message", (message) => {
+        console.log("server se aagaya message in frontend ", message);
+        
+      });
+
+      document.getElementById("btn").addEventListener("click", (e) => {
+        socket.emit("a message", textfield.value);
+      });
+    </script>
+  </body>
 </html>
