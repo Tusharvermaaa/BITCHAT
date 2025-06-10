@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!--  vercel  , heroku , onrender (render) ,   -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>bitchat</title>
@@ -15,6 +16,11 @@
         <div class="chat-messages" id="chat-messages">
           <!-- Messages will be appended here -->
         </div>
+        <!-- <div class="chat-message received">
+        </div>
+
+        <div class="chat-message sent">
+        </div> -->
       </main>
       <form class="chat-form" id="chat-form">
         <input
@@ -30,18 +36,45 @@
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
+      const chatBox = document.getElementById("chat-messages");
       const textfield = document.getElementById("msg");
 
       const socket = io();
+
       // prints in website console (kyuki server ne bheja hai )
       socket.on("message", (message) => {
-        console.log("server se aagaya message in frontend ", message);
-        
+
+         addMessage(message, "received");
+          console.log("server se aagaya message in frontend ", message);
       });
 
       document.getElementById("btn").addEventListener("click", (e) => {
+
+        e.preventDefault();
+        addMessage(textfield.value, "sent");
         socket.emit("a message", textfield.value);
+        textfield.value ="";
+
       });
+      //  something going to be very interestnig hee
+
+     function addMessage(text, type = "sent") {
+  const msgDiv = document.createElement("div");
+  msgDiv.classList.add("chat-message", type);
+  msgDiv.innerHTML = `<p>${text}</p>`;
+  chatBox.appendChild(msgDiv);
+
+  // Scroll to latest message smoothly
+  chatBox.scrollTo({
+    top: chatBox.scrollHeight,
+    behavior: "smooth"
+  });
+}
+
+
+      // Example Usage:
+      // addMessage("Hello! This is you.", "sent");
+      // addMessage("Hi! I'm another user.", "received");
     </script>
   </body>
 </html>

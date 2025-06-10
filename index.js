@@ -15,7 +15,8 @@ app.get("/", (req, res) => {
 io.on("connection", (socket) => {
   socket.on("a message", (message) => {
     console.log("a new user message , ", message); // prints in vs code console (which is basically a server for my development time   )
-    io.emit("message", message);
+    socket.broadcast.emit("message", message); // this will send the message to all the clients connected to the server
+    // io.emit("message", message); // this will send the message to all the clients connected to the server      
   });
   console.log("socket is client , ", socket.id);
 });
